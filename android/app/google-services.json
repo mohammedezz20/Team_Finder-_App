@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "26059253288",
+    "project_id": "team-finder-app",
+    "storage_bucket": "team-finder-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:26059253288:android:27e84ff36654a30338f71d",
+        "android_client_info": {
+          "package_name": "com.example.advanced_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "26059253288-8fjr8vcj5ui7252dce5k613p0dsc06fk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.advanced_project",
+            "certificate_hash": "fca5da72c73cfba597044e38cc89efbaa549e249"
+          }
+        },
+        {
+          "client_id": "26059253288-ccumla8bfn19fkg58bhkjvclc2at7m7a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPAc__pDjIP_k0dHTNu1ICujK1xTBcZsQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "26059253288-ccumla8bfn19fkg58bhkjvclc2at7m7a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
