@@ -1,13 +1,14 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../Screens/authScreen.dart';
 import '../../../widget/ShowSnakebar.dart';
-import '../../Network/FireStoreMethod.dart';
-import '../../Network/FirebaseStorageMethod.dart';
-import '../../Network/auth_method.dart';
+import '../../Network/remote/FireStoreMethod.dart';
+import '../../Network/remote/FirebaseStorageMethod.dart';
+import '../../Network/remote/auth_method.dart';
 import 'loginstates.dart';
 
 class Logincubit extends Cubit<LoginStates> {
@@ -138,10 +139,17 @@ class Logincubit extends Cubit<LoginStates> {
         );
       }
     else{
+
       auth.Sign_in_with_EmailAndPassword(
           emailAddress: loginEmailController.text,
           password: loginPasswordController.text,
-          context: context);
+          context: context).then((value) {
+        loginEmailController.clear();
+        loginPasswordController.clear();
+      });
+
+
+
     }
   }
 

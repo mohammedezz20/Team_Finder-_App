@@ -2,10 +2,9 @@ import 'package:advanced_project/Screens/Register.dart';
 import 'package:advanced_project/res/assets_res.dart';
 import 'package:advanced_project/shared/cubit/loginCubit/logincubit.dart';
 import 'package:advanced_project/shared/cubit/loginCubit/loginstates.dart';
+import 'package:advanced_project/SizeCalc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../shared/Colors.dart';
 import '../widget/Button.dart';
 import '../widget/Separator.dart';
@@ -35,7 +34,7 @@ class LoginScreen extends StatelessWidget {
               ),
               child: Padding(
                 padding: EdgeInsets.only(
-                    top: statusBarHeight * 1.4, right: 28.w, left: 28.w),
+                    top: statusBarHeight * 1.4, right: getWidth(context, 28), left: getWidth(context, 28)),
                 child: Center(
                   child: SingleChildScrollView(
                     child: Column(
@@ -46,7 +45,7 @@ class LoginScreen extends StatelessWidget {
                           style: TextStyle(fontSize: 64, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(
-                          height: 50.h,
+                          height: getHeight(context, 50),
                         ),
                         DefaultTextField(
                           controller: cubit.loginEmailController,
@@ -57,7 +56,7 @@ class LoginScreen extends StatelessWidget {
                           hint: "Enter your ُEmail",
                         ),
                         SizedBox(
-                          height: 30.h,
+                          height: getHeight(context, 30),
                         ),
                         DefaultTextField(
                           controller: cubit.loginPasswordController,
@@ -67,26 +66,11 @@ class LoginScreen extends StatelessWidget {
                           suffixpressed: (){cubit.changpasswordstate();},
                           hint: "***************",
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-
-                                },
-                                child: const Text(
-                                  "Forgot password?",
-                                  style: TextStyle(fontSize: 14, color: Colors.black),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                  SizedBox(height: getHeight(context, 30),),
                         defaultButton(
                             function: () {
                               cubit.login_With_Email(context);
+
                             },
                             text: 'Login',
                             isupper: false,
@@ -119,20 +103,20 @@ class LoginScreen extends StatelessWidget {
 
                         const Custom_Dividor(),
                         SizedBox(
-                          height: 50.h,
+                          height: getHeight(context, 50),
                         ),
                         SigninOption(
                           logo: AssetsRes.GOOGLE_LOGO,
                           background: googlebuttonColor,
                           width: w ,
-                          height: 50.h,
+                          height: getHeight(context,50 ),
                           function: () {
                             cubit.register_with_Google(context: context, isNew: false);
                           },
                           radius: 6,
                         ),
                         SizedBox(
-                          height: 30.h,
+                          height: getHeight(context, 30),
                         ),
 
 

@@ -38,3 +38,52 @@ class UserModel {
     };
   }
 }
+
+
+// class User {
+//   String name;
+//   String bio;
+//   String about;
+//   String imageURL;
+//   String cvLink;
+//   List<String> links;
+//   String email;
+//   String password;
+
+//   User({
+//     this.name,
+//     this.bio,
+//     this.about,
+//     this.imageURL,
+//     this.cvLink,
+//     this.links,
+//     this.email,
+//     this.password,
+//   });
+//
+//   factory User.fromJson(Map<String, dynamic> json) {
+//     return User(
+//       name: json['name'],
+//       bio: json['bio'],
+//       about: json['about'],
+//       imageURL: json['imageURL'],
+//       cvLink: json['cvLink'],
+//       links: List<String>.from(json['links']),
+//       email: json['email'],
+//       password: json['password'],
+//     );
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'name': name,
+//       'bio': bio,
+//       'about': about,
+//       'imageURL': imageURL,
+//       'cvLink': cvLink,
+//       'links': links,
+//       'email': email,
+//       'password': password,
+//     };
+//   }
+// }

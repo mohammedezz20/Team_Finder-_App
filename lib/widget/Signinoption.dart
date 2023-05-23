@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../SizeCalc.dart';
+
 
 class SigninOption extends StatelessWidget {
 
@@ -38,7 +40,7 @@ SigninOption(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Image.asset(logo,width: 40.h,height: 40.h,),
+              Image.asset(logo,width:getHeight(context, 40),height: getHeight(context, 40),),
               const Text("Continue With Google",style: TextStyle(fontSize: 20,color: Colors.white),),
             ],
           )

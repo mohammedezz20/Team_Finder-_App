@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../../widget/ShowSnakebar.dart';
+import '../../../widget/ShowSnakebar.dart';
 import 'FireStoreMethod.dart';
 
 class Auth {
@@ -135,5 +135,15 @@ class Auth {
     } catch (e) {
       return 'Error: ${e.toString()}';
     }
+  }
+
+  Future<bool> isUsernameExists(String username) async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('username', isEqualTo: username)
+        .limit(1)
+        .get();
+
+    return snapshot.docs.isNotEmpty;
   }
 }

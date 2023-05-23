@@ -2,9 +2,10 @@
 import 'package:advanced_project/shared/Colors.dart';
 import 'package:advanced_project/shared/cubit/Appcubit/appcubit.dart';
 import 'package:advanced_project/shared/cubit/Appcubit/appstate.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 
 class MianScreen extends StatelessWidget {
@@ -22,6 +23,7 @@ class MianScreen extends StatelessWidget {
           return DefaultTabController(
             length: 3,
             child: Scaffold(
+              backgroundColor: Colors.white,
               appBar: AppBar(
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.vertical(
@@ -34,7 +36,9 @@ class MianScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
-                      onTap: (){},
+                      onTap: (){
+                        FirebaseAuth.instance.signOut();
+                      },
                       splashColor: Colors.blue[100],
                       child: Ink(
 

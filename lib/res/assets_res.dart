@@ -11,4 +11,5 @@ class AssetsRes {
   static const String BACKGROUND = 'assets/background.png';
   static const String DEFAULT = 'assets/default.png';
   static const String IMAGETEST = 'assets/imageTest.png';
+  static const String LOADING = 'assets/loading.png';
 }

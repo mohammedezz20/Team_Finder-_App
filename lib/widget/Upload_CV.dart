@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../SizeCalc.dart';
 class UploadCV extends StatelessWidget {
 
   String logo;
@@ -40,7 +40,7 @@ class UploadCV extends StatelessWidget {
 
             children: [
               const Spacer(flex: 4,),
-              Image.asset(logo,width: 40.h,height: 40.h,),
+              Image.asset(logo,width: getHeight(context, 40),height: getHeight(context, 40),),
               const Spacer(flex: 1,),
 
               Text("$text"),

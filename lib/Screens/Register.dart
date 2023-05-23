@@ -1,9 +1,10 @@
 import 'package:advanced_project/Screens/LoginScreen.dart';
+import 'package:advanced_project/SizeCalc.dart';
 import 'package:advanced_project/res/assets_res.dart';
 import 'package:advanced_project/shared/cubit/loginCubit/logincubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../shared/Colors.dart';
 import '../shared/cubit/loginCubit/loginstates.dart';
 import '../widget/Button.dart';
@@ -38,7 +39,7 @@ class RegisterScreen extends StatelessWidget {
           ),
           child: Padding(
             padding: EdgeInsets.only(
-                top: statusBarHeight * 1.4, right: 28.w, left: 28.w),
+                top: statusBarHeight * 1.4, right: getWidth(context, 28), left: getWidth(context, 28)),
             child: Center(
               child: SingleChildScrollView(
                 child: Column(
@@ -49,7 +50,7 @@ class RegisterScreen extends StatelessWidget {
                       style: TextStyle(fontSize: 64, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
-                      height: 15.h,
+                        height: getHeight(context, 15),
                     ),
                     DefaultTextField(
                       controller: cubit.registerNameController,
@@ -60,7 +61,7 @@ class RegisterScreen extends StatelessWidget {
                       hint: "Enter your full name",
                     ),
                     SizedBox(
-                      height: 15.h,
+                      height: getHeight(context, 15),
                     ),
                     DefaultTextField(
                       controller: cubit.registerUserNameController,
@@ -71,7 +72,7 @@ class RegisterScreen extends StatelessWidget {
                       hint: "Enter your Username",
                     ),
                     SizedBox(
-                      height: 15.h,
+                      height: getHeight(context, 15),
                     ),
                     DefaultTextField(
                       controller: cubit.registerEmailController,
@@ -82,7 +83,7 @@ class RegisterScreen extends StatelessWidget {
                       hint: "Enter your email",
                     ),
                     SizedBox(
-                      height: 15.h,
+                      height: getHeight(context, 15),
                     ),
                     DefaultTextField(
                       controller: cubit.registerPasswordController,
@@ -95,7 +96,7 @@ class RegisterScreen extends StatelessWidget {
                       hint: "**************",
                     ),
                     SizedBox(
-                      height: 15.h,
+                      height: getHeight(context, 15),
                     ),
                     DefaultTextField(
                       controller: cubit.registerConfirmPasswordController,
@@ -109,10 +110,10 @@ class RegisterScreen extends StatelessWidget {
                     ),
 
                     SizedBox(
-                      height: 25.h,
+                      height: getHeight(context, 25),
                     ),
                     defaultButton(
-                        function: () {
+                        function: () async {
                           if(cubit.registerNameController.text=="") {
                             ShowSnackBar(
                               context: context,
@@ -147,10 +148,25 @@ class RegisterScreen extends StatelessWidget {
                             );
                           }
                           else{
-                            Navigator.push(context,
-                                MaterialPageRoute(builder:
-                                    (context)=> const Completedata(false)));
-                          }
+                            bool isExistingUsername = await  cubit.auth.isUsernameExists(
+                                cubit.registerUserNameController.text
+                            );
+
+
+                            if(isExistingUsername){
+                              ShowSnackBar(
+                                context: context,
+                                text: "This username already exist",
+                              );
+                            }
+                            else{
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const Completedata(false)));
+                                }
+                              }
                         },
                         text: 'Next',
                         isupper: false,
@@ -171,13 +187,13 @@ class RegisterScreen extends StatelessWidget {
 
                     const Custom_Dividor(),
                     SizedBox(
-                      height: 50.h,
+                      height: getHeight(context, 50),
                     ),
                     SigninOption(
                       logo: AssetsRes.GOOGLE_LOGO,
                       background: googlebuttonColor,
                       width: w ,
-                      height: 50.h,
+                      height: getHeight(context, 50),
                       function: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder:
@@ -187,7 +203,7 @@ class RegisterScreen extends StatelessWidget {
                       radius: 6,
                     ),
                     SizedBox(
-                      height: 30.h,
+                      height: getHeight(context, 30),
                     ),
                   ],
                 ),

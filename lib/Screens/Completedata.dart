@@ -1,7 +1,7 @@
 import 'package:advanced_project/shared/cubit/loginCubit/logincubit.dart';
+import 'package:advanced_project/SizeCalc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../res/assets_res.dart';
 import '../shared/Colors.dart';
@@ -21,9 +21,9 @@ class Completedata extends StatelessWidget {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final double h = MediaQuery.of(context).size.height;
     final double w = MediaQuery.of(context).size.width;
-    return BlocConsumer<Logincubit,LoginStates>(
+    return BlocConsumer<Logincubit, LoginStates>(
         builder: (context, state) {
-          var cubit =Logincubit.obj(context);
+          var cubit = Logincubit.obj(context);
           return Scaffold(
             body: Container(
               height: double.infinity,
@@ -36,17 +36,33 @@ class Completedata extends StatelessWidget {
               ),
               child: Padding(
                 padding: EdgeInsets.only(
-                    top: statusBarHeight * 1.4, right: 28.w, left: 28.w),
+                    top: statusBarHeight * 1.4,
+                    right: getWidth(context, 28),
+                    left: getWidth(context, 28)),
                 child: Center(
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         //********************PickImage*****************
-                        const Image_Picker(),
+                        Image_Picker(
+                          pickByCameraFunction: () {
+                            Logincubit.obj(context)
+                                .imageSelector(context, "camera");
+                            Logincubit.obj(context).usingimagestate();
+                          },
+                          pickByGalleryFunction: () {
+                            Logincubit.obj(context)
+                                .imageSelector(context, "gallery");
+                            Logincubit.obj(context).usingimagestate();
+                          },
+                          imagePath: Logincubit.obj(context).imageFile.path,
+                          height: getHeight(context, 200),
+                          width: getWidth(context, 200),
+                        ),
                         //********************Linkedin*****************
                         SizedBox(
-                          height: 50.h,
+                          height: getHeight(context, 50),
                         ),
                         DefaultTextField(
                           controller: cubit.registerGithubNameController,
@@ -58,10 +74,10 @@ class Completedata extends StatelessWidget {
                         ),
                         //********************Github*****************
                         SizedBox(
-                          height: 30.h,
+                          height: getWidth(context, 30),
                         ),
                         DefaultTextField(
-                          controller:  cubit.registerLinkedInNameController,
+                          controller: cubit.registerLinkedInNameController,
                           text: "LinkedIn Account",
                           suffixIcon: null,
                           ispass: false,
@@ -71,17 +87,17 @@ class Completedata extends StatelessWidget {
 
                         //********************UploadCV*****************
                         SizedBox(
-                          height: 30.h,
+                          height: getHeight(context, 30),
                         ),
                         UploadCV(
                           text: "Upload your CV",
                           logo: AssetsRes.UPLOAD,
                           background: const Color(0xffDBEBF6),
-                          height: 50.h,
+                          height:getHeight(context, 50),
                           width: double.infinity,
                           function: () async {
-                            cubit.file_path = await Logincubit.obj(context).select_file();
-                            Logincubit.obj(context).showcvstate();
+                            cubit.file_path = await cubit.select_file();
+                            cubit.showcvstate();
                           },
                           radius: 5,
                         ),
@@ -89,28 +105,32 @@ class Completedata extends StatelessWidget {
                           visible: Logincubit.obj(context).showcv,
                           child: CvViewer(
                             text: cubit.file_path,
+                            icon: Icons.highlight_remove_outlined,
+                            function: () {
+                              cubit.file_path = '';
+                              cubit.showcvstate();
+                            },
                           ),
                         ),
                         //********************RegisterButton*****************
                         SizedBox(
-                          height: 30.h,
+                          height: getHeight(context, 30),
                         ),
                         defaultButton(
                             function: () {
-                             if(isSocial==false) {
+                              if (isSocial == false) {
                                 cubit.register_with_email(context: context);
+                              } else {
+                                cubit.register_with_Google(
+                                    context: context, isNew: true);
                               }
-                             else
-                               {
-                                 cubit.register_with_Google(context: context,isNew: true);
-                               }
                             },
                             text: 'Register',
                             isupper: false,
                             radius: 6,
                             background: buttonColor),
                         SizedBox(
-                          height: 30.h,
+                          height: getHeight(context, 30),
                         ),
                       ],
                     ),

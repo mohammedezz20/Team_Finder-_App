@@ -1,6 +1,6 @@
 import 'package:advanced_project/shared/cubit/Appcubit/appcubit.dart';
 import 'package:advanced_project/shared/cubit/Appcubit/appstate.dart';
-import 'package:advanced_project/widget/SizeCalc.dart';
+import 'package:advanced_project/SizeCalc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

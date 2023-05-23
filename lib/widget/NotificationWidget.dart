@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'Button.dart';
-import 'SizeCalc.dart';
+import '../SizeCalc.dart';
 
 class NotificationWidget extends StatelessWidget {
   bool isRequest ;
@@ -21,7 +21,8 @@ class NotificationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
 
-      height: getHeight(context, 60),
+      height: getHeight(context, 80),
+      width:double.infinity,
       child: Row(
         children: [
           //***********************************image**************************
@@ -50,21 +51,23 @@ class NotificationWidget extends StatelessWidget {
               color: Colors.grey,
             ),
           ),
+          //*******************************body********************************
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (isRequest) ...[
                 Container(
                   width: getWidth(
                       context,
                       MediaQuery.of(context).size.width -
-                          getWidth(context, 110)),
+                          getWidth(context,60)),
                   child: RichText(
                     textAlign: TextAlign.center,
-                    maxLines: 3,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     text: TextSpan(
+
                       text: userName,
                       style: const TextStyle(
                         fontSize: 14,
@@ -97,13 +100,13 @@ class NotificationWidget extends StatelessWidget {
                   children: [
                     NotificatioOption(
                         function: () {  },
-                      Fsize: 10,
+                      Fsize: 8,
                         text: 'Show Profile',
                       isupper: false,
                       background: buttonColor,
                       radius: 3,
-                    height: getHeight(context, 18),
-                      width: getWidth(context, 70),
+                    height: getHeight(context, 20),
+                      width: getWidth(context, 80),
                     ),
                     SizedBox(width: getWidth(context, 3),),
                     NotificatioOption(
@@ -113,7 +116,7 @@ class NotificationWidget extends StatelessWidget {
                       isupper: false,
                       background: buttonColor,
                       radius: 3,
-                    height: getHeight(context, 18),
+                    height: getHeight(context, 20),
                       width: getWidth(context, 50),
                     ),
                     SizedBox(width: getWidth(context, 3),),
@@ -124,7 +127,7 @@ class NotificationWidget extends StatelessWidget {
                       isupper: false,
                       background: buttonColor,
                       radius: 3,
-                    height: getHeight(context, 18),
+                    height: getHeight(context, 20),
                       width: getWidth(context, 50),
                     ),
                   ],
@@ -135,7 +138,7 @@ class NotificationWidget extends StatelessWidget {
                   width: getWidth(
                       context,
                       MediaQuery.of(context).size.width -
-                          getWidth(context, 110)),
+                          getWidth(context, 100)),
                   child: RichText(
                     textAlign: TextAlign.center,
                     maxLines: 3,
@@ -149,7 +152,7 @@ class NotificationWidget extends StatelessWidget {
                       ),
                       children: <TextSpan>[
                         const TextSpan(
-                          text: ' accept your request to join \n',
+                          text: ' accept your request to join ',
                           style: TextStyle(
                               fontSize: 14,
                               color: Colors.black,

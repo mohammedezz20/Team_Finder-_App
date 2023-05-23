@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../SizeCalc.dart';
+
 
 class TeamCard extends StatelessWidget {
   const TeamCard({super.key});
@@ -132,8 +134,8 @@ class TeamCard extends StatelessWidget {
                 onPressed: (){},
                 child: Container(
                   alignment: Alignment.center,
-                  width: 100.w,
-                  height: 30.h,
+                  width:getWidth(context,100),
+                  height: getHeight(context, 30),
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(5)),
