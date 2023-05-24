@@ -52,125 +52,127 @@ class NotificationWidget extends StatelessWidget {
             ),
           ),
           //*******************************body********************************
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (isRequest) ...[
-                Container(
-                  width: getWidth(
-                      context,
-                      MediaQuery.of(context).size.width -
-                          getWidth(context,60)),
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    text: TextSpan(
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (isRequest) ...[
+                  Container(
+                    width: getWidth(
+                        context,
+                        MediaQuery.of(context).size.width -
+                            getWidth(context,60)),
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      text: TextSpan(
 
-                      text: userName,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        text: userName,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                        children:  <TextSpan>[
+                           TextSpan(
+                            text: ' sent you a request to join your team ',
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400),
+                          ),
+                          TextSpan(
+                            text: teamName,
+                            style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
-                      children:  <TextSpan>[
-                         TextSpan(
-                          text: ' sent you a request to join your team ',
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        TextSpan(
-                          text: teamName,
-                          style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
                     ),
                   ),
-                ),
-                SizedBox(height: getHeight(context, 3),),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    NotificatioOption(
-                        function: () {  },
-                      Fsize: 8,
-                        text: 'Show Profile',
-                      isupper: false,
-                      background: buttonColor,
-                      radius: 3,
-                    height: getHeight(context, 20),
-                      width: getWidth(context, 80),
-                    ),
-                    SizedBox(width: getWidth(context, 3),),
-                    NotificatioOption(
-                        function: () {  },
-                      Fsize: 8,
-                        text: 'Accept',
-                      isupper: false,
-                      background: buttonColor,
-                      radius: 3,
-                    height: getHeight(context, 20),
-                      width: getWidth(context, 50),
-                    ),
-                    SizedBox(width: getWidth(context, 3),),
-                    NotificatioOption(
-                        function: () {  },
-                      Fsize: 8,
-                        text: 'Excuse',
-                      isupper: false,
-                      background: buttonColor,
-                      radius: 3,
-                    height: getHeight(context, 20),
-                      width: getWidth(context, 50),
-                    ),
-                  ],
-                ),
-              ],
-              if (!isRequest) ...[
-                Container(
-                  width: getWidth(
-                      context,
-                      MediaQuery.of(context).size.width -
-                          getWidth(context, 100)),
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    text: TextSpan(
-                      text: userName,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                  SizedBox(height: getHeight(context, 3),),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      NotificatioOption(
+                          function: () {  },
+                        Fsize: 8,
+                          text: 'Show Profile',
+                        isupper: false,
+                        background: buttonColor,
+                        radius: 3,
+                      height: getHeight(context, 20),
+                        width: getWidth(context, 80),
                       ),
-                      children: <TextSpan>[
-                        const TextSpan(
-                          text: ' accept your request to join ',
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w400),
+                      SizedBox(width: getWidth(context, 3),),
+                      NotificatioOption(
+                          function: () {  },
+                        Fsize: 8,
+                          text: 'Accept',
+                        isupper: false,
+                        background: buttonColor,
+                        radius: 3,
+                      height: getHeight(context, 20),
+                        width: getWidth(context, 50),
+                      ),
+                      SizedBox(width: getWidth(context, 3),),
+                      NotificatioOption(
+                          function: () {  },
+                        Fsize: 8,
+                          text: 'Excuse',
+                        isupper: false,
+                        background: buttonColor,
+                        radius: 3,
+                      height: getHeight(context, 20),
+                        width: getWidth(context, 50),
+                      ),
+                    ],
+                  ),
+                ],
+                if (!isRequest) ...[
+                  Container(
+                    width: getWidth(
+                        context,
+                        MediaQuery.of(context).size.width -
+                            getWidth(context, 100)),
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      text: TextSpan(
+                        text: userName,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
                         ),
-                        TextSpan(
-                          text: teamName,
-                          style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
+                        children: <TextSpan>[
+                          const TextSpan(
+                            text: ' accept your request to join ',
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400),
+                          ),
+                          TextSpan(
+                            text: teamName,
+                            style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
+                ],
               ],
-            ],
+            ),
           )
         ],
       ),
