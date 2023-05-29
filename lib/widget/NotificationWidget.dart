@@ -26,31 +26,31 @@ class NotificationWidget extends StatelessWidget {
       child: Row(
         children: [
           //***********************************image**************************
-          Container(
-            width: getWidth(context, 46),
-            height: getHeight(context, 46),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: Colors.grey,
-                width: 1,
-              ),
-            ),
-            child: CircleAvatar(
-              radius: 22.5,
-              backgroundImage: NetworkImage(
-                  'https://th.bing.com/th/id/OIP.g9JQBsgn1JtJ4WirA1--IQHaHa?pid=ImgDet&rs=1'),
-            ),
-          ),
-          //*******************************Separator********************************
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Container(
-              width: 2,
-              height: getHeight(context, 50),
-              color: Colors.grey,
-            ),
-          ),
+          // Container(
+          //   width: getWidth(context, 46),
+          //   height: getHeight(context, 46),
+          //   decoration: BoxDecoration(
+          //     shape: BoxShape.circle,
+          //     border: Border.all(
+          //       color: Colors.grey,
+          //       width: 1,
+          //     ),
+          //   ),
+          //   child: CircleAvatar(
+          //     radius: 22.5,
+          //     backgroundImage: NetworkImage(
+          //         'https://th.bing.com/th/id/OIP.g9JQBsgn1JtJ4WirA1--IQHaHa?pid=ImgDet&rs=1'),
+          //   ),
+          // ),
+          // //*******************************Separator********************************
+          // Padding(
+          //   padding: const EdgeInsets.all(10.0),
+          //   child: Container(
+          //     width: 2,
+          //     height: getHeight(context, 50),
+          //     color: Colors.grey,
+          //   ),
+          // ),
           //*******************************body********************************
           Expanded(
             child: Column(

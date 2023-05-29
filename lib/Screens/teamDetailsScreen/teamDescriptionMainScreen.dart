@@ -2,9 +2,11 @@ import 'package:advanced_project/moadels/membersmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../moadels/TeamModel.dart';
+import '../../moadels/UserModel.dart';
 import '../../shared/cubit/teamCubit/teamState.dart';
 import '../../shared/cubit/teamCubit/teamcubit.dart';
 import '../../SizeCalc.dart';
+import '../meetingScreen.dart';
 
 
 class TeamDescriptionMainScreen extends StatefulWidget {
@@ -89,36 +91,16 @@ _TeamDescriptionMainScreenState(this.teamModel);
               ),
             ),
             actions: [
+
               Visibility(
                 visible: _cubit.ischatScreen,
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: InkWell(
-                    onTap: () {},
-                    splashColor: Colors.grey,
-                    child: Ink(
-                      child: Container(
-                        height: getHeight(context, 40),
-                        width: getWidth(context, 40),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.grey,
-                        ),
-                        child: const Icon(
-                          Icons.call,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Visibility(
-                visible: _cubit.ischatScreen,
-                child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      return jumpToMeetingpage(context,
+                           conferanceId: '${teamModel.teamID}');
+                    },
                     splashColor: Colors.grey,
                     child: Ink(
                       child: Container(
@@ -186,4 +168,8 @@ _TeamDescriptionMainScreenState(this.teamModel);
       },
     );
   }
+}
+jumpToMeetingpage(BuildContext context, {required String conferanceId}) {
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => VideoConferance("512")));
 }

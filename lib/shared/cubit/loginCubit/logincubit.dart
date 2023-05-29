@@ -1,10 +1,13 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../Screens/authScreen.dart';
+import '../../../main.dart';
+import '../../../moadels/UserModel.dart';
 import '../../../widget/ShowSnakebar.dart';
 import '../../Network/remote/FireStoreMethod.dart';
 import '../../Network/remote/FirebaseStorageMethod.dart';
@@ -21,8 +24,10 @@ class Logincubit extends Cubit<LoginStates> {
   var registerConfirmPasswordController = TextEditingController();
   var registerNameController = TextEditingController();
   var registerUserNameController = TextEditingController();
-  var registerGithubNameController = TextEditingController();
-  var registerLinkedInNameController = TextEditingController();
+  var registerGithubController = TextEditingController();
+  var registerLinkedInController = TextEditingController();
+  var registerBioController = TextEditingController();
+  var registerAboutController = TextEditingController();
 
   Auth auth = Auth();
   FirebaseStorageMethod firebaseStorageMethod = FirebaseStorageMethod();
@@ -95,105 +100,164 @@ class Logincubit extends Cubit<LoginStates> {
   register_with_email({
     required BuildContext context,
   }) async {
-
-    if (registerGithubNameController.text == '' ||
-        registerLinkedInNameController.text == '' ||
-        file_path == '') {
-      ShowSnackBar(
-        context: context,
-        text:
-        "Make sure to type the required data (Github ,LinkedIn and CV )",
-      );}
-     else {
-        var photoURL = firebaseStorageMethod.uploadImageToFirebase(file);
-        var cvUrl = firebaseStorageMethod.uploadPDF(File(file_path));
-        auth.signUpWithEmail(
-            email: registerEmailController.text,
-            password: registerPasswordController.text,
-            context: context,
-            name: registerNameController.text,
-            username: registerUserNameController.text,
-            githubLink: registerGithubNameController.text,
-            linkedinLink: registerLinkedInNameController.text,
-            photoURL: photoURL,
-            cV_URL: cvUrl);
-        registerEmailController.text = '';
-        registerPasswordController.text = '';
-        registerNameController.text = '';
-        registerUserNameController.text = '';
-        registerConfirmPasswordController.text = '';
-        registerLinkedInNameController.text = '';
-        registerGithubNameController.text = '';
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const AuthScreen()));
-      }
-  }
-
-  login_With_Email(context){
-    if(loginEmailController.text==''||loginPasswordController.text=='')
-      {
+    emit(RegisterLoadingState());
+   try  {
+      if (registerBioController.text == '' ||
+          registerAboutController.text == '' ||
+          imageFile.toString() == defaultImagePath) {
         ShowSnackBar(
           context: context,
-          text:
-          "Email and Password must not be empty",
+          text: "Make sure to Add the required data (Bio ,About and Image )",
+        );
+      } else {
+        var photoURL = await firebaseStorageMethod.uploadImageToFirebase(file);
+        var cvUrl = file_path == ''
+            ? ''
+            : await firebaseStorageMethod.uploadPDF(File(file_path));
+        await auth.signUpWithEmail(
+          email: registerEmailController.text,
+          password: registerPasswordController.text,
+          context: context,
+          name: registerNameController.text,
+          username: registerUserNameController.text,
+          photoURL: photoURL,
+          bio: registerBioController.text,
+          about: registerAboutController.text,
+          links: [
+            Links(title: "cvURL", link: cvUrl).toMap(),
+            Links(title: "gitHub", link: registerGithubController.text).toMap(),
+            Links(title: "linkedIn", link: registerLinkedInController.text).toMap(),
+          ],
+        );
+        loginAndregisterClearData();
+        emit(RegisterStatusState());
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const AuthScreen()),
+          (route) => false,
         );
       }
-    else{
-
-      auth.Sign_in_with_EmailAndPassword(
-          emailAddress: loginEmailController.text,
-          password: loginPasswordController.text,
-          context: context).then((value) {
-        loginEmailController.clear();
-        loginPasswordController.clear();
-      });
-
-
-
+      
+    }catch(error){
+     emit(RegisterFaildState(error.toString()));
+      print(error.toString());
     }
+  }
+
+  login_With_Email(context) async {
+    emit(LoginLoadingState());
+    try{
+      if (loginEmailController.text == '' ||
+          loginPasswordController.text == '') {
+        ShowSnackBar(
+          context: context,
+          text: "Email and Password must not be empty",
+        );
+      } else {
+        await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email:  loginEmailController.text, password: loginPasswordController.text);
+
+        loginAndregisterClearData();
+
+      }    } on FirebaseAuthException catch (e) {
+      emit(LoginFaildState(e.toString()));
+      print(e.code.toString());
+      if (e.code == 'user-not-found') {
+        ShowSnackBar(
+          context: context,
+          text: 'No user found for : ${loginEmailController.text} .',
+        );
+      } else if (e.code == 'wrong-password') {
+        ShowSnackBar(
+          context: context,
+          text: 'Wrong password provided for that user.',
+        );
+      } else if (e.code == 'invalid-email') {
+        ShowSnackBar(
+          context: context,
+          text: 'Invalid email format',
+        );
+      }
+    }
+    emit(LoginStatusState());
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const AuthScreen()),
+          (route) => false,
+    );
+
   }
 
   register_with_Google({
     required BuildContext context,
     required bool isNew,
   }) async {
-    if (!isNew) {
-      var cvUrl = firebaseStorageMethod.uploadPDF(File(file_path));
-      auth.Sign_in_with_google(
-          context: context,
-          githubLink: registerGithubNameController.text,
-          linkedinLink: registerLinkedInNameController.text,
-          cV_URL: cvUrl,
-          isnew: isNew);
-      registerLinkedInNameController.text = '';
-      registerGithubNameController.text = '';
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const AuthScreen()));
-    } else {
-      if (registerGithubNameController.text == '' ||
-          registerLinkedInNameController.text == '' ||
-          file_path == '') {
-        ShowSnackBar(
-          context: context,
-          text:
-              "Make sure to type the required data (Github ,LinkedIn and CV )",
-        );
-      } else {
-        var cvUrl = firebaseStorageMethod.uploadPDF(File(file_path));
+    try{
+      if (!isNew) {
         auth.Sign_in_with_google(
             context: context,
-            githubLink: registerGithubNameController.text,
-            linkedinLink: registerLinkedInNameController.text,
-            cV_URL: cvUrl,
-            isnew: isNew).then((_){
-          fireStoreMethod.getUserData(auth.user!.uid);
-          registerLinkedInNameController.text = '';
-          registerGithubNameController.text = '';
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => const AuthScreen()));
-        });
-
+            bio: registerBioController.text,
+            about: registerAboutController.text,
+            links: [
+              Links(title: "cvURL", link: '').toMap(),
+              Links(title: "gitHub", link: '').toMap(),
+              Links(title: "linkedIn", link: '').toMap(),
+            ],
+            isnew: isNew);
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const AuthScreen()));
+      } else {
+        if (registerBioController.text == '' ||
+            registerAboutController.text == '' ||
+            imageFile == defaultImagePath) {
+          ShowSnackBar(
+            context: context,
+            text: "Make sure to Add the required data (Bio ,About and Image )",
+          );
+        } else {
+          var cvUrl = file_path == ''
+              ? ''
+              : firebaseStorageMethod.uploadPDF(File(file_path));
+          auth.Sign_in_with_google(
+                  context: context,
+                  bio: registerBioController.text,
+                  about: registerAboutController.text,
+                  links: [
+                    Links(title: "cvURL", link: cvUrl).toMap(),
+                    Links(title: "gitHub", link: registerGithubController.text).toMap(),
+                    Links(
+                        title: "linkedIn",
+                        link: registerLinkedInController.text).toMap(),
+                  ],
+                  isnew: isNew)
+              .then((_) {
+            fireStoreMethod.getUserData(auth.user!.uid);
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const AuthScreen()),
+              (route) => false,
+            );
+          });
+        }
       }
+
+    }catch(error){
+      print(error.toString());
     }
+    loginAndregisterClearData();
   }
+    loginAndregisterClearData(){
+    loginPasswordController.clear();
+    loginEmailController.clear();
+    registerNameController.clear();
+    registerUserNameController.clear();
+    registerBioController.clear();
+    registerAboutController.clear();
+    registerEmailController.clear();
+    registerLinkedInController.clear();
+    registerGithubController.clear();
+    registerConfirmPasswordController.clear();
+    registerPasswordController.clear();
+    }
+
 }

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../SizeCalc.dart';
 
-class TaskDeatailsRowWidget extends StatelessWidget {
-   TaskDeatailsRowWidget({required this.mainText,required this.data}) ;
+class DeatailsRowWidget extends StatelessWidget {
+   DeatailsRowWidget({required this.mainText,required this.data}) ;
 var mainText;
 var data;
   @override
@@ -14,7 +14,7 @@ var data;
       child: Row(
         children: [
           Container(
-            width: 1.7 * MediaQuery.of(context).size.width / 6,
+           
             child: Text(
               mainText,
               style: Theme.of(context)
@@ -28,12 +28,14 @@ var data;
             style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 16),
           ),
           Container(
-            width: 3.5 * MediaQuery.of(context).size.width / 6,
-            child: Text(
-              data,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 16),
+           
+            child: Expanded(
+              child: Text(
+                data,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 16),
 
 
+              ),
             ),
           ),
         ],

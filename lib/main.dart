@@ -8,26 +8,28 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:zego_zimkit/services/services.dart';
 
+
+
 import 'Screens/authScreen.dart';
-String? imagePath;
+String? defaultImagePath;
 Future<void> main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  Bloc.observer = MyBlocObserver();
-  imagePath = await saveAssetImageToDevice();
   ZIMKit().init(
     appID: 1250794916, // your appid
     appSign: '7acbef41316953ff041fc6bb361e218931d6c3a441011cddc4f1adc22516ef61', // your appSign
   );
+  await Firebase.initializeApp();
+  Bloc.observer = MyBlocObserver();
+  defaultImagePath = await saveAssetImageToDevice();
   runApp(const MyApp());
 }
 
-XFile ImageFile = XFile(imagePath!);
+XFile ImageFile = XFile(defaultImagePath!);
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

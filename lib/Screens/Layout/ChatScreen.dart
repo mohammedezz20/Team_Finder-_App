@@ -40,27 +40,26 @@ class ChatScreen extends StatelessWidget {
                           conversationID: conversation.id,
                           conversationType: conversation.type,
                           appBarBuilder: (context, defaultAppBar) {
-                                       return ChatAppBar(conversation: conversation,context: context );
+                            return ChatAppBar(conversation: conversation,context: context );
                           },
                           showPickFileButton:false ,
                           showPickMediaButton: false,
                           messageItemBuilder:(context, message, defaultWidget) {
-                               int ismine(){
-                                return message.isMine?0:1;
-
-                               }
-                              var icon;
-                               ("${message.info.sentStatus.name}"=="success")?
-                               icon=Icons.check_circle_sharp: icon=Icons.check;
+                            int ismine(){
+                              return message.isMine?0:1;
+                            }
+                            var icon;
+                            ("${message.info.sentStatus.name}"=="success")?
+                            icon=Icons.check_circle_sharp: icon=Icons.check;
 
                             return Theme(
                               data: ThemeData(primaryColor: Colors.blue),
                               child:Chatwidget("${message.textContent?.text}"
-                                ,ismine()
-                                ,message,
-                                message.info.timestamp,
-                                icon
-                                ),
+                                  ,ismine()
+                                  ,message,
+                                  message.info.timestamp,
+                                  icon
+                              ),
                             );
                           } ,
                         );

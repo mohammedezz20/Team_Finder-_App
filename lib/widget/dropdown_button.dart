@@ -8,7 +8,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Dropdown_button extends StatelessWidget {
 
-
+var text;
+var onopen;
+Dropdown_button({this.text='Team Ctegory',this.onopen});
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<TeamCubit,TeamStates>(builder: (context,state){
@@ -24,7 +26,7 @@ class Dropdown_button extends StatelessWidget {
           child: DropdownButton2<String>(
             isExpanded: true,
             hint: Text(
-              'Team Ctegory',
+              text,
               style: TextStyle(
                 fontSize: 16,
                 color: Theme.of(context).hintColor,
@@ -89,11 +91,8 @@ class Dropdown_button extends StatelessWidget {
               },
             ),
             //This to clear the search value when you close the menu
-            onMenuStateChange: (isOpen) {
-              if (!isOpen) {
-                cubit.teamDropDownListController.clear();
-              }
-            },
+            onMenuStateChange: onopen,
+
           ),
         ),
       );

@@ -3,6 +3,7 @@ import 'package:advanced_project/shared/cubit/teamCubit/teamState.dart';
 import 'package:advanced_project/shared/cubit/teamCubit/teamcubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:zego_zimkit/services/services.dart';
 import 'dart:math';
 import '../Screens/teamDetailsScreen/teamDescriptionMainScreen.dart';
 import '../moadels/membersmodel.dart';
@@ -24,6 +25,8 @@ TeamsWidget({required this.teamdata});
         onTap: (){
           cubit.currentTeam=teamdata;
           cubit.getTasks(cubit.currentTeam?.teamID);
+          ZIMKit().createGroup(teamdata.teamName, [],id:teamdata.teamID);
+          ZIMKit().joinGroup(teamdata.teamID);
           List<Member> members=teamdata.members;
           cubit.userRole(members);
           Navigator.push(context,
@@ -37,22 +40,22 @@ TeamsWidget({required this.teamdata});
             padding:  EdgeInsets.symmetric(vertical: getHeight(context, 10)),
             child: Column(
               children: [
-                Container(
-                  height: getHeight(context, 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-
-                  ),
-                  child:  ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    child: LinearProgressIndicator(
-                      backgroundColor:Color(0xffb1d5f5) ,
-                      value: progress,
-                      valueColor: AlwaysStoppedAnimation<Color>(Color(0xff47b2ff),),
-
-                    ),
-                  ),
-                ),
+                // Container(
+                //   height: getHeight(context, 10),
+                //   decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.circular(10),
+                //
+                //   ),
+                //   child:  ClipRRect(
+                //     borderRadius: BorderRadius.all(Radius.circular(10)),
+                //     child: LinearProgressIndicator(
+                //       backgroundColor:Color(0xffb1d5f5) ,
+                //       value: progress,
+                //       valueColor: AlwaysStoppedAnimation<Color>(Color(0xff47b2ff),),
+                //
+                //     ),
+                //   ),
+                // ),
                 SizedBox(height: getHeight(context, 10),),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -81,7 +84,8 @@ TeamsWidget({required this.teamdata});
                             teamdata.teamName.substring(0,2).toUpperCase(),
                             style: TextStyle(fontSize: 23,
                                 fontWeight: FontWeight.w400,color: Colors.white),),
-                        ):CircleAvatar(
+                        ):
+                        CircleAvatar(
                           backgroundColor: Colors.transparent,
                           backgroundImage: AssetImage(AssetsRes.LOADING),
                           radius: getWidth(context,25),

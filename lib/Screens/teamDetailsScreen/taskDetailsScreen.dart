@@ -75,35 +75,35 @@ class TaskDeatailsScreen extends StatelessWidget {
                   horizontal: getWidth(context, 20)),
               child: Column(
                 children: [
-                  TaskDeatailsRowWidget(
+                  DeatailsRowWidget(
                     mainText: "Task title",
                     data: "${task.taskTitle}",
                   ),
                   Divider(color: Colors.grey, thickness: 2),
-                  TaskDeatailsRowWidget(
+                  DeatailsRowWidget(
                     mainText: "Description",
                     data: "${task.taskDetails}",
                   ),
                   Divider(color: Colors.grey, thickness: 2),
-                  TaskDeatailsRowWidget(
+                  DeatailsRowWidget(
                     mainText: "Start date",
                     data: "${StringgetFormattedDate(task.startDate)}",
                   ),
-                  TaskDeatailsRowWidget(
+                  DeatailsRowWidget(
                     mainText: "Start time",
                     data: "${convertTimestampTo12HourFormat(task.startDate)}",
                   ),
                   Divider(color: Colors.grey, thickness: 2),
-                  TaskDeatailsRowWidget(
+                  DeatailsRowWidget(
                     mainText: "DeadLine",
                     data: "${StringgetFormattedDate(task.deadLine)}",
                   ),
-                  TaskDeatailsRowWidget(
+                  DeatailsRowWidget(
                     mainText: "Time",
                     data: "${convertTimestampTo12HourFormat(task.deadLine)}",
                   ),
                   Divider(color: Colors.grey, thickness: 2),
-                  TaskDeatailsRowWidget(
+                  DeatailsRowWidget(
                     mainText: "Status",
                     data: task.status,
                   ),

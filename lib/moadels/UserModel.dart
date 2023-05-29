@@ -1,89 +1,63 @@
 class UserModel {
-  String email;
   String name;
+  String bio;
+  String about;
+  String email;
   String username;
-  String githubLink;
-  String linkedinLink;
   String photoURL;
-  String cV_URL;
+  var links;
+  var userStatus;
+  var role;
+  var id;
 
   UserModel({
-    required this.email,
     required this.name,
+    required this.bio,
+    required this.about,
+    required this.email,
     required this.username,
-    required this.githubLink,
-    required this.linkedinLink,
     required this.photoURL,
-    required this.cV_URL,
+    required this.links,
+    this.role,
+    this.userStatus,
   });
 
-  UserModel.fromMap(Map<String, dynamic> map)
-      : email = map['email'],
+  UserModel.fromMap(Map<String, dynamic> map):
         name = map['name'],
+  bio=map['bio'],
+  about=map['about'],
+        email = map['email'],
         username = map['username'],
-        githubLink = map['githubLink'],
-        linkedinLink = map['linkedinLink'],
         photoURL = map['photoURL'],
-        cV_URL = map['cv_URL'];
+        role = map['role'],
+        userStatus = map['userStatus'],
+        links = map['links'];
 
   Map<String, dynamic> toMap() {
     return {
-      'username': username,
       'name': name,
+      'bio': bio,
+      'about': about,
       'email': email,
-      'githubLink': githubLink,
-      'linkedinLink': linkedinLink,
+      'username': username,
       'photoURL': photoURL,
-      'cv_URL': cV_URL,
+      'links': links,
+      'role':role,
+      'userStatus':userStatus,
     };
   }
 }
 
+class Links {
+  var title;
+  var link;
+  Links({required this.title,required this.link});
+  Links.fromMap(Map<String, dynamic> json)
+      : title = json['title'],
+        link = json['link'];
 
-// class User {
-//   String name;
-//   String bio;
-//   String about;
-//   String imageURL;
-//   String cvLink;
-//   List<String> links;
-//   String email;
-//   String password;
 
-//   User({
-//     this.name,
-//     this.bio,
-//     this.about,
-//     this.imageURL,
-//     this.cvLink,
-//     this.links,
-//     this.email,
-//     this.password,
-//   });
-//
-//   factory User.fromJson(Map<String, dynamic> json) {
-//     return User(
-//       name: json['name'],
-//       bio: json['bio'],
-//       about: json['about'],
-//       imageURL: json['imageURL'],
-//       cvLink: json['cvLink'],
-//       links: List<String>.from(json['links']),
-//       email: json['email'],
-//       password: json['password'],
-//     );
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     return {
-//       'name': name,
-//       'bio': bio,
-//       'about': about,
-//       'imageURL': imageURL,
-//       'cvLink': cvLink,
-//       'links': links,
-//       'email': email,
-//       'password': password,
-//     };
-//   }
-// }
+  Map<String, dynamic> toMap() {
+    return {'title': title, 'link': link};
+  }
+}

@@ -9,6 +9,7 @@ class TeamModel {
   String logoURL;
   String creationDate;
   List<Member> members;
+  var role;
 
   TeamModel({
     required this.teamName,
@@ -18,7 +19,8 @@ class TeamModel {
     required this.logoURL,
     required this.creationDate,
     required this.members,
-    this.teamID
+    this.teamID,
+    this.role
   });
 
   factory TeamModel.fromJson(Map<String, dynamic> json) {

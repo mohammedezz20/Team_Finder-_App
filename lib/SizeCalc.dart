@@ -6,8 +6,6 @@ double getWidth(BuildContext context, double percentage) {
 
 }
 
-
-
 double getHeight(BuildContext context, double percentage) {
   var h=percentage/932;
   return MediaQuery.of(context).size.height * h;

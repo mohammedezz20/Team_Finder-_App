@@ -10,31 +10,14 @@ import '../../widget/NotificationWidget.dart';
 class NotificationScreen extends StatelessWidget {
    NotificationScreen({Key? key}) : super(key: key);
 List Notificatios=[
-  {
-    'username':'Ali Ahmed',
-    'team':'Icpc Team',
-    'request':false,
-  },
-  {
-    'username':'Mohammed abdullah',
-    'team':'First Team',
-    'request':true,
-  },
+
   {
     'username':'Alaa Ali',
     'team':'GDSC Team',
     'request':false,
   },
-  {
-    'username':'Mohammed abdullah',
-    'team':'First Team',
-    'request':true,
-  },
-  {
-    'username':'Alaa Ali',
-    'team':'GDSC Team',
-    'request':false,
-  },
+
+ 
 
 ];
 

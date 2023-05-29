@@ -1,3 +1,4 @@
+import 'package:advanced_project/moadels/UserModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,11 +15,11 @@ class Auth {
   User? get user => _firebaseAuth.currentUser;
 
   late Map<String, dynamic> currentUser = {};
-  Sign_in_with_google(
-      {required BuildContext context,
-      required String githubLink,
-      required String linkedinLink,
-      required Future<String> cV_URL,
+  Sign_in_with_google({
+    required String bio,
+    required String about,
+    required List<Map<String,dynamic>> links,
+      required BuildContext context,
       required bool isnew}) async {
     try {
       GoogleSignInAccount? googlesignin = await GoogleSignIn().signIn();
@@ -34,14 +35,15 @@ class Auth {
       if (user != null) {
         if (userCredential.additionalUserInfo!.isNewUser && isnew) {
           await fireStoreMethod.addNewUser(
-              email: user.email!,
               name: user.displayName!,
+              bio: bio,
+              about: about,
+              email: user.email!,
               username: user.email!.split('@')[0],
-              githubLink: githubLink,
-              linkedinLink: linkedinLink,
               photoURL: user.photoURL!,
-              CV_URL: cV_URL,
-              user: user);
+              links: links,
+              user: user,
+          );
         }
       }
     } on FirebaseAuthException catch (error) {
@@ -52,16 +54,17 @@ class Auth {
     }
   }
 
-  Future signUpWithEmail(
-      {required String email,
-      required String password,
-      required BuildContext context,
+  Future signUpWithEmail({
       required String name,
+      required String bio,
+      required String about,
+      required String email,
       required String username,
-      required String githubLink,
-      required String linkedinLink,
-      required Future<String> photoURL,
-      required Future<String> cV_URL}) async {
+      required String password,
+    required List<Map<String,dynamic>> links,
+      required String photoURL,
+      required BuildContext context,
+  }) async {
     try {
       UserCredential userCredential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -69,15 +72,15 @@ class Auth {
         password: password,
       );
       User? user = userCredential.user;
-      String imageUrl = await photoURL;
+      String imageUrl =  photoURL;
       await fireStoreMethod.addNewUser(
-          email: email,
           name: name,
+          bio: bio,
+          about: about,
+          email: email,
           username: username,
-          githubLink: githubLink,
-          linkedinLink: linkedinLink,
           photoURL: imageUrl,
-          CV_URL: cV_URL,
+        links:links,
           user: user);
     } catch (e) {
       return e.toString();
@@ -111,18 +114,19 @@ class Auth {
   }
 
   Future<String> checkEmail(String email) async {
-    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-    if (!emailRegex.hasMatch(email)) {
-      return 'Please enter a valid email address.';
-    }
+
 
     try {
+      // final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+      // if (!emailRegex.hasMatch(email)) {
+      //   return 'Please enter a valid email address.';
+      // }
       List<String> signInMethods =
           await FirebaseAuth.instance.fetchSignInMethodsForEmail(email);
       if (signInMethods.isNotEmpty) {
         return 'Email address is already in use.';
       } else {
-        return 'Email address is available.';
+        return '';
       }
     } on FirebaseAuthException catch (e) {
       if (e.message == 'The email address is badly formatted.') {

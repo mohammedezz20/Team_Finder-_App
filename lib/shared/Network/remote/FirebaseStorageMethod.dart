@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 class FirebaseStorageMethod{
 
+
   Future<String> uploadImageToFirebase(image) async {
     String fileName = '${DateTime.now().millisecondsSinceEpoch}.png';
     try {
@@ -36,6 +37,21 @@ class FirebaseStorageMethod{
 
       return "error when uploading file";
     }
+  }
+
+
+  void deleteImage(String downloadUrl) {
+    final FirebaseStorage storage = FirebaseStorage.instance;
+    String filePath = Uri.decodeFull(Uri.parse(downloadUrl).path);
+    print(filePath);
+    String fileName = filePath.substring(filePath.lastIndexOf('/') -6);
+    print(fileName);
+    Reference storageReference = storage.ref().child(fileName);
+    storageReference.delete().then((_) {
+      print('Image deleted successfully');
+    }).catchError((error) {
+      print('Failed to delete image: $error');
+    });
   }
 
 }

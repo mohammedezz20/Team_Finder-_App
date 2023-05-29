@@ -10,8 +10,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:zego_zimkit/services/defines.dart';
 
+import '../../../Screens/teamDetailsScreen/TeamChatScreen.dart';
 import '../../../Screens/teamDetailsScreen/dashboard.dart';
+import '../../../Screens/teamDetailsScreen/requestScreen.dart';
 import '../../../moadels/UserModel.dart';
 import '../../../moadels/membersmodel.dart';
 import '../../../moadels/taskmodel.dart';
@@ -26,8 +29,8 @@ class TeamCubit extends Cubit<TeamStates> {
 
   var Screens = <Widget>[
     DashboardScreen(),
-    Text("request"),
-    Text("chat"),
+    TeamNotificationScreen(),
+    TeamChatScreen(),
   ];
 
   //*****************************show and hide call button****************
@@ -78,6 +81,7 @@ class TeamCubit extends Cubit<TeamStates> {
 
     Navigator.pop(context);
   }
+
   //*****************************Category List****************
   final List<String> category = [
     'Mobile Development',
@@ -102,47 +106,46 @@ class TeamCubit extends Cubit<TeamStates> {
     'other'
   ];
   var selectedValue;
-  SelectValue(value){
-    selectedValue=value;
+  SelectValue(value) {
+    selectedValue = value;
+    getTeamsByCategory();
     emit(SelectValueState());
   }
 
 //*****************************controllers****************
-var teamNameController=TextEditingController();
-var teamDescriptionController=TextEditingController();
-var teamRequiredSkillsController=TextEditingController();
-var teamDropDownListController=TextEditingController();
+  var teamNameController = TextEditingController();
+  var teamDescriptionController = TextEditingController();
+  var teamRequiredSkillsController = TextEditingController();
+  var teamDropDownListController = TextEditingController();
 
 //*****************************Skills List****************
-  var skillShow=false;
-List<String> skillsWidget=[
+  var skillShow = false;
+  List<String> skillsWidget = [];
 
-];
+  void addSkill(String text) {
+    skillsWidget.add(text);
+    emit(AddNewSkillsState());
+  }
 
- void addSkill(String text){
-   skillsWidget.add(text);
-   emit(AddNewSkillsState());
- }
-  void removeSkill(String text){
+  void removeSkill(String text) {
     skillsWidget.remove(text);
     emit(RemoveSkillsState());
   }
 
-  void ShowSkillsWidget()
-  {
-    skillShow=true;
+  void ShowSkillsWidget() {
+    skillShow = true;
     emit(ShowSkillsWidgetState());
   }
-  void HideSkillsWidget()
-  {
-    skillShow=false;
+
+  void HideSkillsWidget() {
+    skillShow = false;
     emit(HideSkillsWidgetState());
   }
 
   //*************************Add New Team ***************
-  Auth auth=Auth();
-  FireStoreMethod fireStoreMethod=FireStoreMethod();
-  FirebaseStorageMethod firebaseStorageMethod=FirebaseStorageMethod();
+  Auth auth = Auth();
+  FireStoreMethod fireStoreMethod = FireStoreMethod();
+  FirebaseStorageMethod firebaseStorageMethod = FirebaseStorageMethod();
   UserModel? usermodel;
 
   Future<void> loadUserData() async {
@@ -153,7 +156,7 @@ List<String> skillsWidget=[
 
   addNewTeam() async {
     emit(AddTeamDataLoadingStates());
-    try{
+    try {
       var photoURL;
       if (file?.path == null) {
         photoURL = '';
@@ -179,117 +182,115 @@ List<String> skillsWidget=[
       HideSkillsWidget();
       imageFile = XFile('');
       getTeamsData();
-    }catch(error){
+    } catch (error) {
       emit(AddTeamDataFailStates(error.toString()));
     }
   }
 
- List<TeamModel> teamsList=[];
+  List<TeamModel> teamsList = [];
   getTeamsData() async {
     emit(GetTeamDataLoadingStates());
-   try {
-      teamsList=await fireStoreMethod.getTeamsForUser(auth.user!.uid).whenComplete(() {
+    try {
+      teamsList = await fireStoreMethod
+          .getTeamsForUser(auth.user!.uid)
+          .whenComplete(() {
         emit(GetTeamDataSuccessStates());
       });
-    }catch(error){
-     print(error.toString());
-     emit(GetTeamDataFailStates(error.toString()));
-   }
+    } catch (error) {
+      print(error.toString());
+      emit(GetTeamDataFailStates(error.toString()));
+    }
   }
-var userrole;
-   userRole(List<Member> members) {
+
+  var userrole;
+  userRole(List<Member> members) {
     for (var member in members) {
       print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
       print(member.uid);
       print(member.role);
       if (member.uid == auth.user!.uid) {
-print("ssssssssssssssssssssssssssssssssssssssssssss");
-      userrole=member.role;
+        print("ssssssssssssssssssssssssssssssssssssssssssss");
+        userrole = member.role;
       }
     }
   }
 
 //*******************************Task***************************
   List<TaskModel> taskList = [];
-  List<TaskModel>getToDo(){
-    List<TaskModel> todo=[];
-    for(var task in taskList )
-      {
-        if(task.status=='todo')
-        {
-          todo.add(task);
-        }
+  List<TaskModel> getToDo() {
+    List<TaskModel> todo = [];
+    for (var task in taskList) {
+      if (task.status == 'todo') {
+        todo.add(task);
       }
+    }
     return todo;
   }
-  List<TaskModel>getOnGoing(){
-    List<TaskModel> ongoing=[];
-    for(var task in taskList )
-      {
-        if(task.status=='ongoing')
-        {
-          ongoing.add(task);
-        }
+
+  List<TaskModel> getOnGoing() {
+    List<TaskModel> ongoing = [];
+    for (var task in taskList) {
+      if (task.status == 'ongoing') {
+        ongoing.add(task);
       }
+    }
     return ongoing;
   }
-  List<TaskModel>getDone(){
-    List<TaskModel> done=[];
-    for(var task in taskList )
-      {
-        if(task.status=='done')
-        {
-          done.add(task);
-        }
+
+  List<TaskModel> getDone() {
+    List<TaskModel> done = [];
+    for (var task in taskList) {
+      if (task.status == 'done') {
+        done.add(task);
       }
+    }
     return done;
   }
 
 //************************AddTask**************************
   TeamModel? currentTeam;
-  var taskTitleController=TextEditingController();
-  var taskDescriptionController=TextEditingController();
+  var taskTitleController = TextEditingController();
+  var taskDescriptionController = TextEditingController();
   DateTime startSelectedDate = DateTime.now();
   DateTime deadlineSelectedDate = DateTime.now();
-  TimeOfDay startSelectedTime = TimeOfDay(hour: DateTime.now().hour + 1, minute: 0);
-  TimeOfDay deadlineSelectedTime = TimeOfDay(hour: DateTime.now().hour + 1, minute: 0);
-  Future<void> selectDate(BuildContext context,bool isstart) async {
+  TimeOfDay startSelectedTime =
+      TimeOfDay(hour: DateTime.now().hour + 1, minute: 0);
+  TimeOfDay deadlineSelectedTime =
+      TimeOfDay(hour: DateTime.now().hour + 1, minute: 0);
+  Future<void> selectDate(BuildContext context, bool isstart) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
       lastDate: DateTime(2100),
     );
-    if (picked != null ) {
-      if(isstart) {
+    if (picked != null) {
+      if (isstart) {
         startSelectedDate = picked;
         // print("1111111111111111111111111111111111111111111111111111111111111");
         // print(startSelectedDate);
-      }
-      else{
+      } else {
         deadlineSelectedDate = picked;
         // print("1111111111111111111111111111111111111111111111111111111111111");
         // print(dedlineSelectedDate);
       }
     }
     emit(selectDateState());
-
   }
 
-  Future<void> selectTime(BuildContext context,bool isStart) async {
+  Future<void> selectTime(BuildContext context, bool isStart) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay(hour: DateTime.now().hour + 1, minute: 0),
       initialEntryMode: TimePickerEntryMode.inputOnly,
     );
-    if (picked != null ) {
-      if(isStart) {
+    if (picked != null) {
+      if (isStart) {
         startSelectedTime = picked;
         // print("1111111111111111111111111111111111111111111111111111111111111");
         // print(startSelectedTime);
-      }
-      else{
-        deadlineSelectedTime=picked;
+      } else {
+        deadlineSelectedTime = picked;
         // print("1111111111111111111111111111111111111111111111111111111111111");
         // print(deadlineSelectedTime);
       }
@@ -297,7 +298,7 @@ print("ssssssssssssssssssssssssssssssssssssssssssss");
     emit(selectTimeState());
   }
 
-  Timestamp convertTimeAndDateToTimeStamp(dateString,timeString){
+  Timestamp convertTimeAndDateToTimeStamp(dateString, timeString) {
     List<String> dateParts = dateString.split('-');
 
     int year = int.parse(dateParts[0]);
@@ -309,11 +310,11 @@ print("ssssssssssssssssssssssssssssssssssssssssssss");
     int minute = int.parse(timeParts[1]);
     DateTime dateTime = DateTime(year, month, day, hour, minute);
     Timestamp timestamp = Timestamp.fromDate(dateTime);
-return timestamp;
+    return timestamp;
   }
 
-  addnewTask(var teamId){
-   try {
+  addnewTask(var teamId) {
+    try {
       TaskModel newtask = TaskModel(
           taskTitle: taskTitleController.text,
           taskDetails: taskDescriptionController.text,
@@ -327,32 +328,30 @@ return timestamp;
       fireStoreMethod.addTaskToFirestore(teamId, newtask).whenComplete(() {
         emit(AddTaskSuccessState());
       });
-
-    }catch(error){
-     emit(AddTaskSFaildState("Error when add task : "+error.toString()));
-   }
+    } catch (error) {
+      emit(AddTaskSFaildState("Error when add task : " + error.toString()));
+    }
     startSelectedDate = DateTime.now();
     deadlineSelectedDate = DateTime.now();
     startSelectedTime = TimeOfDay(hour: DateTime.now().hour + 1, minute: 0);
     deadlineSelectedTime = TimeOfDay(hour: DateTime.now().hour + 1, minute: 0);
     taskTitleController.clear();
     taskDescriptionController.clear();
-   getTasks(currentTeam?.teamID);
+    getTasks(currentTeam?.teamID);
   }
- getTasks(teamID) async {
+
+  getTasks(teamID) async {
     emit(GetTaskLoadingState());
-    try{
-      taskList=await fireStoreMethod.getAllTasksByTeamId(teamID);
+    try {
+      taskList = await fireStoreMethod.getAllTasksByTeamId(teamID);
       emit(GetTaskSuccessState());
-    }catch(error)
-  {
-    emit(GetTaskSFaildState("Error when Get task : "+error.toString()));
+    } catch (error) {
+      emit(GetTaskSFaildState("Error when Get task : " + error.toString()));
+    }
   }
-}
-editTask({required teamId,required tasId,required status})
-{
-  try{
-    
+
+  editTask({required teamId, required tasId, required status}) {
+    try {
       TaskModel newtask = TaskModel(
           taskTitle: taskTitleController.text,
           taskDetails: taskDescriptionController.text,
@@ -366,41 +365,82 @@ editTask({required teamId,required tasId,required status})
       fireStoreMethod.updateTask(
           documentId: tasId, teamId: teamId, UpdatedTask: newtask);
       emit(EditTaskSuccessState());
-    }catch(error){
-    emit(EditTaskSFaildState(error.toString()));
-
+    } catch (error) {
+      emit(EditTaskSFaildState(error.toString()));
+    }
+    startSelectedDate = DateTime.now();
+    deadlineSelectedDate = DateTime.now();
+    startSelectedTime = TimeOfDay(hour: DateTime.now().hour + 1, minute: 0);
+    deadlineSelectedTime = TimeOfDay(hour: DateTime.now().hour + 1, minute: 0);
+    taskTitleController.clear();
+    taskDescriptionController.clear();
+    getTasks(currentTeam?.teamID);
   }
-  startSelectedDate = DateTime.now();
-  deadlineSelectedDate = DateTime.now();
-  startSelectedTime = TimeOfDay(hour: DateTime.now().hour + 1, minute: 0);
-  deadlineSelectedTime = TimeOfDay(hour: DateTime.now().hour + 1, minute: 0);
-  taskTitleController.clear();
-  taskDescriptionController.clear();
-  getTasks(currentTeam?.teamID);
-  }
-  
-  deleteTask({required teamId,required taskId})
-  async {
-    try{
-     await  fireStoreMethod.deleteTask(teamId: teamId, taskID: taskId);
-     emit(DeleteTaskSuccessState());
-     getTasks(currentTeam?.teamID);
 
-    }catch(error)
-    {
+  deleteTask({required teamId, required taskId}) async {
+    try {
+      await fireStoreMethod.deleteTask(teamId: teamId, taskID: taskId);
+      emit(DeleteTaskSuccessState());
+      getTasks(currentTeam?.teamID);
+    } catch (error) {
       emit(DeleteTaskSFaildState(error.toString()));
     }
   }
 
-  updateStatus({required teamId,required taskId,required status}) async {
-    try{
-     await  fireStoreMethod.updateTaskStatus(
+  updateStatus({required teamId, required taskId, required status}) async {
+    try {
+      await fireStoreMethod.updateTaskStatus(
           documentId: taskId, teamId: teamId, newStatus: status);
-     emit(UpdateStatusSuccessState());
-     getTasks(currentTeam?.teamID);
-    } catch(error){
+      emit(UpdateStatusSuccessState());
+      getTasks(currentTeam?.teamID);
+    } catch (error) {
       emit(UpdateStatusFaildState(error.toString()));
     }
   }
+
+//*****************************************seachteam********************************
+  var searchTeamController = TextEditingController();
+  List<TeamModel> teamSerchRes = [];
+  getTeamsByCategory() async {
+    emit(GetTeamsByCategoryLoadingState());
+    try {
+      teamSerchRes = await fireStoreMethod.getTeamswithCategory(
+          auth.user!.uid, selectedValue);
+      emit(GetTeamsByCategorySuccessState());
+    } catch (error) {
+      emit(GetTeamsByCategoryFaildState(error.toString()));
+    }
+  }
+
+  List<UserModel> teamMemberData = [];
+  getTeamMembersData(List<Member> members) async {
+    emit(GetTeamMemberDataLoadingState());
+    try {
+      teamMemberData = await fireStoreMethod.getTeamsMemberData(members);
+      emit(GetTeamMemberDataSuccessState());
+    } catch (error) {
+      emit(GetTeamMemberDataFaildState(error.toString()));
+    }
+  }
+//*****************************************EditAndDataForTeam********************************
+  create_room(){
+    ZIMRoomInfo roomInfo = ZIMRoomInfo();
+    roomInfo.roomID = currentTeam?.teamID;
+    roomInfo.roomName = currentTeam!.teamName;
+    ZIMRoomAdvancedConfig advancedConfig = ZIMRoomAdvancedConfig();
+
+//Join a room directly.
+    ZIM.getInstance()?.enterRoom(roomInfo, advancedConfig).then((value) => {
+    print("teamroom joined")
+    }).catchError((onError){
+      print("teamroom not joined");
+
+    });
+  }
+
+  var prevewtask=false;
+var isEdit=false;
+var isPreview=false;
+
 
 }

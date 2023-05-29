@@ -3,6 +3,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../shared/Network/remote/auth_method.dart';
 import 'LoginScreen.dart';
@@ -22,7 +23,12 @@ class AuthScreen extends StatelessWidget {
         builder: ((context,snapshot)  {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-              child: Container(),
+              child:  SpinKitSpinningLines(
+                color: Colors.blue,
+                size: 100,
+                itemCount: 8,
+                lineWidth: 3,
+              ),
             );
           }
           if(snapshot.hasData) {

@@ -26,30 +26,40 @@ SkillWidget({required this.text});
             child: Row(
 mainAxisSize: MainAxisSize.min,
               children: [
-                InkWell(
-                  onTap: (){
-                    cubit.removeSkill(text);
-                    if(cubit.skillsWidget.length==0)
-                    {cubit.HideSkillsWidget();}
-                  },
-                  child: Container(
+                if(!cubit.prevewtask)...[
+                  InkWell(
+                    onTap: (){
+                      cubit.removeSkill(text);
+                      if(cubit.skillsWidget.length==0)
+                      {cubit.HideSkillsWidget();}
+                    },
+                    child: Container(
 
-                    height: getHeight(context, 25),
-                    width: getWidth(context, 25),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white
+                      height: getHeight(context, 25),
+                      width: getWidth(context, 25),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white
+                      ),
+                      child: Icon(Icons.highlight_remove,size: 20,),
                     ),
-                    child: Icon(Icons.highlight_remove,size: 20,),
                   ),
-                ),
-                SizedBox(width: getWidth(context, 10),),
-                Flexible(
-                  fit: FlexFit.loose,
-                  child: Text(text,style: TextStyle(fontSize: 15),
-                    maxLines: 2,
-                  overflow: TextOverflow.ellipsis,),
-                ),
+                  SizedBox(width: getWidth(context, 10),),
+                  Flexible(
+                    fit: FlexFit.loose,
+                    child: Text(text,style: TextStyle(fontSize: 15),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,),
+                  ),
+                ],
+                if(cubit.prevewtask)...[
+                  Flexible(
+                    fit: FlexFit.loose,
+                    child: Text(text,style: TextStyle(fontSize: 15),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,),
+                  ),
+                ],
 
 
               ],

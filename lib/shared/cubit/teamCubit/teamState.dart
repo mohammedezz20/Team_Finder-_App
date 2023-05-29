@@ -70,3 +70,20 @@ class UpdateStatusFaildState extends TeamStates{
     print("Error when update status : "+error);
   }
 }
+
+class GetTeamsByCategoryLoadingState extends TeamStates{}
+class GetTeamsByCategorySuccessState extends TeamStates{}
+class GetTeamsByCategoryFaildState extends TeamStates{
+  String error;
+  GetTeamsByCategoryFaildState(this.error){
+    print("Error when get teams data : "+error);
+  }
+}
+class GetTeamMemberDataLoadingState extends TeamStates{}
+class GetTeamMemberDataSuccessState extends TeamStates{}
+class GetTeamMemberDataFaildState extends TeamStates{
+  String error;
+  GetTeamMemberDataFaildState(this.error){
+    print("Error when get teams data : "+error);
+  }
+}

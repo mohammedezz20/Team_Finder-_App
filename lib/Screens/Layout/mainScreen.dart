@@ -1,16 +1,31 @@
 
+import 'package:advanced_project/SizeCalc.dart';
 import 'package:advanced_project/shared/Colors.dart';
 import 'package:advanced_project/shared/cubit/Appcubit/appcubit.dart';
 import 'package:advanced_project/shared/cubit/Appcubit/appstate.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import '../profileScreen.dart';
 
 
 
-class MianScreen extends StatelessWidget {
+class MianScreen extends StatefulWidget {
   const MianScreen({super.key});
 
+  @override
+  State<MianScreen> createState() => _MianScreenState();
+}
+
+class _MianScreenState extends State<MianScreen> {
+
+  @override
+  void initState() {
+    AppCubit.get(context).loadUserData();
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -19,12 +34,17 @@ class MianScreen extends StatelessWidget {
     // TODO: implement build
     return BlocConsumer<AppCubit, AppStates>(
         builder: (context, state) {
+
           var cubit = AppCubit.get(context);
           return DefaultTabController(
             length: 3,
             child: Scaffold(
               backgroundColor: Colors.white,
               appBar: AppBar(
+                leading: IconButton(icon: Icon(Icons.logout), onPressed: () {
+                  FirebaseAuth.instance.signOut();
+                },
+                color: Colors.black,),
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.vertical(
                     bottom: Radius.circular(15),
@@ -37,20 +57,30 @@ class MianScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
                       onTap: (){
-                        FirebaseAuth.instance.signOut();
+                        Navigator.push(context, MaterialPageRoute(builder:
+                            (context){
+                              return ProfileScreen(user: cubit.usermodel);
+                            }));
                       },
                       splashColor: Colors.blue[100],
                       child: Ink(
 
-                        child: const CircleAvatar(
+                        child:  CircleAvatar(
                           backgroundColor: Colors.white,
-                          radius: 20,
-                          child: Icon(
-                            Icons.person_outline,
-                            size: 30,
-                            color: Colors.black,
+                          radius: getHeight(context, 25),
 
-                          ),
+                          child:ClipOval(
+
+                            child: CachedNetworkImage(
+                              height: getHeight(context, 50),
+                              width: getHeight(context, 50),
+                              fit: BoxFit.contain,
+                              imageUrl: '${cubit.usermodel?.photoURL}',
+                              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                  CircularProgressIndicator(value: downloadProgress.progress),
+                              errorWidget: (context, url, error) => Icon(Icons.error),
+                            ),
+                          )
                         ),
                       ),
                     ),
@@ -62,7 +92,7 @@ class MianScreen extends StatelessWidget {
                 color: appbarColor,
 
                 height: 60,
-                
+
                 child: TabBar(
 
                   labelColor: const Color(0xFF343434),
